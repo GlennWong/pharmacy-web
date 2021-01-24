@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue';
 import {
   BaiduMap,
@@ -57,14 +57,14 @@ export default Vue.extend({
     goTodestination() {
       this.isAfterSearched = true;
     },
-    getCurrentLocation(e: { point: { lng: any; lat: any; }; }) {
+    getCurrentLocation(e) {
       // console.log(e);
       const {lng, lat} = e.point;
       this.nearby.center.lng = lng;
       this.nearby.center.lat = lat;
       this.isAfterSearched = false;
     },
-    getPharmacyList(e: any) {
+    getPharmacyList(e) {
       this.pharmacy = e[0].title;
       // console.log(e[0]);
       // console.log(e[0].uid);
@@ -80,8 +80,8 @@ export default Vue.extend({
     //   console.log(response.data)
     // });
 
-    Vue.axios.post('http://localhost:8088/pharmacies',{name: this.pharmacy}).then((response) => {
-      console.log(response.data)
+      Vue.axios.post('http://localhost:8088/pharmacies', {name: this.pharmacy}).then((response) => {
+      // console.log(response.data)
     });
 
     },
