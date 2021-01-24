@@ -66,12 +66,24 @@ export default Vue.extend({
     },
     getPharmacyList(e: any) {
       this.pharmacy = e[0].title;
-      console.log(e[0]);
+      // console.log(e[0]);
       // console.log(e[0].uid);
       // console.log(e[0].address);
       // console.log(e[0].phoneNumber);
       // console.log(e[0].url);
       // TODO push pharmacy list
+    // Vue.axios.get('http://localhost:8088/users/1').then((response) => {
+    //   console.log(response.data)
+    // });
+
+    // Vue.axios.post('http://localhost:8088/users',{name: 'glen'}).then((response) => {
+    //   console.log(response.data)
+    // });
+
+    Vue.axios.post('http://localhost:8088/pharmacies',{name: this.pharmacy}).then((response) => {
+      console.log(response.data)
+    });
+
     },
   },
   components: {
