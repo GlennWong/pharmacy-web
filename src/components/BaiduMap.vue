@@ -1,24 +1,23 @@
 <template>
   <div class="baidu-map">
-    <h2>{{ msg }}</h2>
+    <label>距离当前定位最近的医院是： </label>
+    <input v-model="pharmacy"></input>
     <baidu-map class="baidu-map" ak="Lz5CRM5Ba94DM7NbZGtPcmx8eXFAoNPq" :center="nearby.center" :zoom="13" :max-zoom="13" :min-zoom="13">
-      <label>Search and Select Location</label>
       <bm-view class="map"></bm-view>
-
       <!-- Search box -->
       <bm-control>
         <bm-auto-complete v-model="keyword" @confirm="goTodestination">
-          <input class="search-box" placeholder="请输入地名关键字"></input>
+          <input class="search-box" placeholder="请输入道路交叉口或关键地标"></input>
         </bm-auto-complete>
       </bm-control>
 
       <!-- Relocate -->
-      <bm-local-search class="search-location" :keyword="keyword" :auto-viewport="true" :panel="false" :selectFirstResult="true" :pageCapacity="1" @infohtmlset="getCurrentLocation" v-if="isAfterSearched"></bm-local-search>
+      <bm-local-search :keyword="keyword" :auto-viewport="true" :panel="false" :selectFirstResult="true" :pageCapacity="1" @infohtmlset="getCurrentLocation" v-if="isAfterSearched"></bm-local-search>
       <bm-marker :position="nearby.center" :dragging="false" animation="BMAP_ANIMATION_BOUNCE"></bm-marker>
 
       <!-- Pharmacies result layer -->
       <bm-circle :center="nearby.center" :radius="nearby.radius"></bm-circle>
-      <bm-local-search class="search-pharmacies" :keyword="searchFor" :auto-viewport="true" :nearby="nearby" :panel="true" :selectFirstResult="false" :pageCapacity="5" @markersset="getPharmacyList" ></bm-local-search>
+      <bm-local-search :keyword="searchFor" :auto-viewport="false" :nearby="nearby" :panel="false" :selectFirstResult="false" :pageCapacity="1" @markersset="getPharmacyList" ></bm-local-search>
 
     </baidu-map>
   </div>
@@ -43,6 +42,7 @@ export default Vue.extend({
     return {
       keyword: '',
       searchFor: '药店',
+      pharmacy: '',
       isAfterSearched: true,
       nearby: {
         center: {
@@ -65,12 +65,14 @@ export default Vue.extend({
       this.isAfterSearched = false;
     },
     getPharmacyList(e: any) {
-      // console.log(e);
+      this.pharmacy = e[0].title;
+      console.log(e[0]);
+      // console.log(e[0].uid);
+      // console.log(e[0].address);
+      // console.log(e[0].phoneNumber);
+      // console.log(e[0].url);
       // TODO push pharmacy list
     },
-  },
-  props: {
-    msg: String,
   },
   components: {
     BaiduMap,
@@ -88,8 +90,7 @@ export default Vue.extend({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .map {
-  width: 79%;
-  float: left;
+  width: 100%;
   height: 500px;
 }
 .search-box {
@@ -99,21 +100,7 @@ export default Vue.extend({
   width: 200px;
   height: 30px;
 }
-.search-location {
-  display: none;
-}
 h3 {
   margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>
